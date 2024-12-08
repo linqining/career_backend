@@ -97,7 +97,20 @@ func (s *CompanyServiceServer) GetCompany(ctx context.Context, req *pb.GetCompan
 }
 
 func (s *CompanyServiceServer) GetCompanyByAddress(ctx context.Context, req *pb.GetCompanyByAddressRequest) (*pb.GetCompanyReply, error) {
-	return &pb.GetCompanyReply{}, nil
+	company, err := s.repo.GetCompanyByAddress(ctx, req.WalletAddress)
+	if err != nil {
+		return nil, ecode.ErrCompanyNotExist.WithDetails(errcode.NewDetails(map[string]interface{}{
+			"msg": err.Error(),
+		})).Status(req).Err()
+	}
+	return &pb.GetCompanyReply{
+		Company: &pb.Company{
+			Id:            company.ID,
+			Name:          company.Name,
+			WalletAddress: company.WalletAddress,
+			LogoUrl:       company.LogoURL,
+		},
+	}, nil
 }
 func (s *CompanyServiceServer) ListCompany(ctx context.Context, req *pb.ListCompanyRequest) (*pb.ListCompanyReply, error) {
 	return &pb.ListCompanyReply{}, nil
