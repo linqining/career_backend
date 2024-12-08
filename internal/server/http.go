@@ -23,5 +23,6 @@ func NewHTTPServer(c *app.Config, userSvc *service.UserServiceServer, companySer
 
 	userv1.RegisterUserServiceHTTPServer(router, userSvc)
 	companyv1.RegisterCompanyServiceHTTPServer(router, companyService)
+
 	return srv
 }

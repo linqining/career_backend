@@ -3,9 +3,86 @@
 
 openapi: 3.0.3
 info:
-    title: CompanyService API
+    title: ""
     version: 0.0.1
 paths:
+    /v1/auth/login:
+        post:
+            tags:
+                - UserService
+            description: sign in
+            operationId: UserService_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoginReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/auth/logout:
+        post:
+            tags:
+                - UserService
+            description: logout
+            operationId: UserService_Logout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LogoutRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LogoutReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/auth/register:
+        post:
+            tags:
+                - UserService
+            description: |-
+                auth
+                 sign up
+            operationId: UserService_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RegisterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RegisterReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/companies:
         get:
             tags:
@@ -177,8 +254,149 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /v1/users:
+        put:
+            tags:
+                - UserService
+            operationId: UserService_UpdateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdateUserReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/users/:
+        post:
+            tags:
+                - UserService
+            description: user
+            operationId: UserService_CreateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateUserReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/users/batch:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_BatchGetUsers
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BatchGetUsersRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BatchGetUsersReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/users/password:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_UpdatePassword
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdatePasswordRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpdatePasswordReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/users/{id}:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_GetUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/GetUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetUserReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
 components:
     schemas:
+        BatchGetUsersReply:
+            type: object
+            properties:
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/User'
+        BatchGetUsersRequest:
+            type: object
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: string
         CreateCompanyReply:
             type: object
             properties:
@@ -196,6 +414,24 @@ components:
                 walletAddress:
                     type: string
                 logoUrl:
+                    type: string
+        CreateUserReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                username:
+                    type: string
+                email:
+                    type: string
+        CreateUserRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                email:
+                    type: string
+                password:
                     type: string
         DeleteCompanyReply:
             type: object
@@ -220,6 +456,16 @@ components:
                 id:
                     type: integer
                     format: int32
+        GetUserReply:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/User'
+        GetUserRequest:
+            type: object
+            properties:
+                id:
+                    type: string
         GoogleProtobufAny:
             type: object
             properties:
@@ -234,6 +480,50 @@ components:
         ListCompanyRequest:
             type: object
             properties: {}
+        LoginReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+        LoginRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+        LogoutReply:
+            type: object
+            properties: {}
+        LogoutRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                accessToken:
+                    type: string
+        RegisterReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                username:
+                    type: string
+        RegisterRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
         Status:
             type: object
             properties:
@@ -259,5 +549,111 @@ components:
                 id:
                     type: integer
                     format: int32
+        UpdatePasswordReply:
+            type: object
+            properties: {}
+        UpdatePasswordRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                password:
+                    type: string
+                newPassword:
+                    type: string
+                confirmPassword:
+                    type: string
+        UpdateUserReply:
+            type: object
+            properties:
+                userId:
+                    type: string
+                username:
+                    type: string
+                email:
+                    type: string
+                phone:
+                    type: string
+                loginAt:
+                    type: string
+                status:
+                    type: integer
+                    format: enum
+                nickname:
+                    type: string
+                avatar:
+                    type: string
+                gender:
+                    type: integer
+                    format: enum
+                birthday:
+                    type: string
+                bio:
+                    type: string
+                updatedAt:
+                    type: string
+        UpdateUserRequest:
+            type: object
+            properties:
+                userId:
+                    type: string
+                username:
+                    type: string
+                email:
+                    type: string
+                phone:
+                    type: string
+                loginAt:
+                    type: string
+                status:
+                    type: integer
+                    format: enum
+                nickname:
+                    type: string
+                avatar:
+                    type: string
+                gender:
+                    type: integer
+                    format: enum
+                birthday:
+                    type: string
+                bio:
+                    type: string
+                updatedAt:
+                    type: string
+        User:
+            type: object
+            properties:
+                id:
+                    type: string
+                username:
+                    type: string
+                email:
+                    type: string
+                phone:
+                    type: string
+                lastLoginAt:
+                    type: string
+                status:
+                    type: integer
+                    format: enum
+                nickname:
+                    type: string
+                avatar:
+                    type: string
+                gender:
+                    type: integer
+                    format: enum
+                birthday:
+                    type: string
+                bio:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+            description: user info
 tags:
     - name: CompanyService
+    - name: UserService
+      description: 用户服务

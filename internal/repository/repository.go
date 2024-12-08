@@ -6,4 +6,4 @@ import (
 )
 
 // ProviderSet is repo providers.
-var ProviderSet = wire.NewSet(dal.Init, NewUserRepo)
+var ProviderSet = wire.NewSet(dal.Init, NewUserRepo, NewCompanyRepo)

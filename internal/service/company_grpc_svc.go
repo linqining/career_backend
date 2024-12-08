@@ -20,8 +20,8 @@ type CompanyServiceServer struct {
 	repo repository.CompanyRepo
 }
 
-func NewCompanyServiceServer() *CompanyServiceServer {
-	return &CompanyServiceServer{}
+func NewCompanyServiceServer(repo repository.CompanyRepo) *CompanyServiceServer {
+	return &CompanyServiceServer{repo: repo}
 }
 
 func (s *CompanyServiceServer) CreateCompany(ctx context.Context, req *pb.CreateCompanyRequest) (*pb.CreateCompanyReply, error) {

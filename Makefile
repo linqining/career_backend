@@ -111,7 +111,7 @@ clean:
 docs:
 	@if ! which swag &>/dev/null; then \
   		echo "downloading swag"; \
-  		go get -u github.com/swaggo/swag/cmd/swag; \
+  		go install github.com/swaggo/swag/cmd/swag@latest; \
   	fi
 	@swag init
 	@mv docs/docs.go api/http

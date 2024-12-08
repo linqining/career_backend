@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package api.company.v1;
 
-import "third_party/validate/validate.proto";
-import "third_party/google/api/annotations.proto";
-import "third_party/gogo/protobuf/gogo.proto";
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "gogo/protobuf/gogo.proto";
 
 option go_package = "career_backend/api/company/v1;v1";
 option java_multiple_files = true;
