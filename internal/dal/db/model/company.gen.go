@@ -11,6 +11,7 @@ type Company struct {
 	Name          string `gorm:"column:name;type:varchar(100);not null" json:"name"`
 	WalletAddress string `gorm:"column:wallet_address;type:varchar(100);not null" json:"wallet_address"`
 	ID            int64  `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
+	LogoURL       string `gorm:"column:logo_url;type:varchar(100);not null" json:"logo_url"`
 }
 
 // TableName Company's table name

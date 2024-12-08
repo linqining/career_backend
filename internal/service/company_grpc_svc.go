@@ -50,6 +50,7 @@ func (s *CompanyServiceServer) CreateCompany(ctx context.Context, req *pb.Create
 	newCompany := &model.Company{
 		Name:          req.Name,
 		WalletAddress: req.WalletAddress,
+		LogoURL:       req.LogoUrl,
 	}
 
 	companyID, err := s.repo.CreateCompany(ctx, newCompany)

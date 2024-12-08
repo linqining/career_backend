@@ -31,6 +31,7 @@ func newCompany(db *gorm.DB, opts ...gen.DOOption) company {
 	_company.Name = field.NewString(tableName, "name")
 	_company.WalletAddress = field.NewString(tableName, "wallet_address")
 	_company.ID = field.NewInt64(tableName, "id")
+	_company.LogoURL = field.NewString(tableName, "logo_url")
 
 	_company.fillFieldMap()
 
@@ -44,6 +45,7 @@ type company struct {
 	Name          field.String
 	WalletAddress field.String
 	ID            field.Int64
+	LogoURL       field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -63,6 +65,7 @@ func (c *company) updateTableName(table string) *company {
 	c.Name = field.NewString(table, "name")
 	c.WalletAddress = field.NewString(table, "wallet_address")
 	c.ID = field.NewInt64(table, "id")
+	c.LogoURL = field.NewString(table, "logo_url")
 
 	c.fillFieldMap()
 
@@ -87,10 +90,11 @@ func (c *company) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *company) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 3)
+	c.fieldMap = make(map[string]field.Expr, 4)
 	c.fieldMap["name"] = c.Name
 	c.fieldMap["wallet_address"] = c.WalletAddress
 	c.fieldMap["id"] = c.ID
+	c.fieldMap["logo_url"] = c.LogoURL
 }
 
 func (c company) clone(db *gorm.DB) company {
