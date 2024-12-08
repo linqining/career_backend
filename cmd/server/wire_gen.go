@@ -38,7 +38,8 @@ func InitApp(cfg *app.Config) (*app.App, func(), error) {
 	userCache := cache.NewUserCache(client)
 	userRepo := repository.NewUserRepo(dbClient, userCache)
 	userServiceServer := service.NewUserServiceServer(userRepo)
-	httpServer := server.NewHTTPServer(cfg, userServiceServer)
+	companyServiceServer := service.NewCompanyServiceServer()
+	httpServer := server.NewHTTPServer(cfg, userServiceServer, companyServiceServer)
 	grpcServer := server.NewGRPCServer(cfg)
 	appApp := newApp(cfg, httpServer, grpcServer)
 	return appApp, func() {

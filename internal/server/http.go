@@ -1,6 +1,7 @@
 package server
 
 import (
+	companyv1 "career_backend/api/company/v1"
 	userv1 "career_backend/api/user/v1"
 	"career_backend/internal/routers"
 	"career_backend/internal/service"
@@ -9,7 +10,7 @@ import (
 )
 
 // NewHTTPServer creates a HTTP server
-func NewHTTPServer(c *app.Config, userSvc *service.UserServiceServer) *http.Server {
+func NewHTTPServer(c *app.Config, userSvc *service.UserServiceServer, companyService *service.CompanyServiceServer) *http.Server {
 	router := routers.NewRouter()
 
 	srv := http.NewServer(
@@ -20,8 +21,7 @@ func NewHTTPServer(c *app.Config, userSvc *service.UserServiceServer) *http.Serv
 
 	srv.Handler = router
 
-	// v1.RegisterGreeterServiceHTTPServer(router, greeterSvc)
 	userv1.RegisterUserServiceHTTPServer(router, userSvc)
-
+	companyv1.RegisterCompanyServiceHTTPServer(router, companyService)
 	return srv
 }

@@ -17,17 +17,20 @@ import (
 
 var (
 	Q             = new(Query)
+	Company       *company
 	UserInfoModel *userInfoModel
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	Company = &Q.Company
 	UserInfoModel = &Q.UserInfoModel
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:            db,
+		Company:       newCompany(db, opts...),
 		UserInfoModel: newUserInfoModel(db, opts...),
 	}
 }
@@ -35,6 +38,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	Company       company
 	UserInfoModel userInfoModel
 }
 
@@ -43,6 +47,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:            db,
+		Company:       q.Company.clone(db),
 		UserInfoModel: q.UserInfoModel.clone(db),
 	}
 }
@@ -58,16 +63,19 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:            db,
+		Company:       q.Company.replaceDB(db),
 		UserInfoModel: q.UserInfoModel.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
+	Company       ICompanyDo
 	UserInfoModel IUserInfoModelDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		Company:       q.Company.WithContext(ctx),
 		UserInfoModel: q.UserInfoModel.WithContext(ctx),
 	}
 }

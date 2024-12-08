@@ -74,6 +74,8 @@ func main() {
 			gen.FieldType("gender", "int32"),
 			gen.FieldType("status", "int32"),
 		),
+		//TODO根据预定来
+		g.GenerateModelAs("company", "Company"),
 	)
 
 	// Generate the code

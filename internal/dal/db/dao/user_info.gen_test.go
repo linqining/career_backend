@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"career_backend/internal/dal/db/model"
+
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 	"gorm.io/gorm/clause"

@@ -6,22 +6,22 @@ package model
 
 const TableNameUserInfoModel = "user_info"
 
-// UserInfoModel 用户表
+// UserInfoModel mapped from table <user_info>
 type UserInfoModel struct {
-	ID        int64  `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	Username  string `gorm:"column:username;not null" json:"username"`
-	Nickname  string `gorm:"column:nickname;not null;comment:用户昵称" json:"nickname"` // 用户昵称
-	Password  string `gorm:"column:password;not null" json:"password"`
-	Avatar    string `gorm:"column:avatar;not null;comment:头像" json:"avatar"` // 头像
-	Gender    int32  `gorm:"column:gender;not null" json:"gender"`
-	Birthday  string `gorm:"column:birthday;not null" json:"birthday"`
-	Phone     string `gorm:"column:phone;not null;comment:手机号" json:"phone"` // 手机号
-	Email     string `gorm:"column:email;not null;comment:邮箱" json:"email"`  // 邮箱
-	Bio       string `gorm:"column:bio;not null" json:"bio"`
-	CreatedAt int64  `gorm:"column:created_at;not null" json:"created_at"`
-	UpdatedAt int64  `gorm:"column:updated_at;not null" json:"updated_at"`
-	LoginAt   int64  `gorm:"column:login_at;not null" json:"login_at"`
-	Status    int32  `gorm:"column:status;not null" json:"status"`
+	ID        int64  `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
+	Username  string `gorm:"column:username;type:longtext;not null" json:"username"`
+	Nickname  string `gorm:"column:nickname;type:longtext;not null;comment:用户昵称" json:"nickname"` // 用户昵称
+	Password  string `gorm:"column:password;type:longtext;not null" json:"password"`
+	Avatar    string `gorm:"column:avatar;type:longtext;not null;comment:头像" json:"avatar"` // 头像
+	Gender    int32  `gorm:"column:gender;type:int;not null" json:"gender"`
+	Birthday  string `gorm:"column:birthday;type:longtext;not null" json:"birthday"`
+	Phone     string `gorm:"column:phone;type:longtext;not null;comment:手机号" json:"phone"` // 手机号
+	Email     string `gorm:"column:email;type:longtext;not null;comment:邮箱" json:"email"`  // 邮箱
+	Bio       string `gorm:"column:bio;type:longtext;not null" json:"bio"`
+	CreatedAt int64  `gorm:"column:created_at;type:bigint;not null" json:"created_at"`
+	UpdatedAt int64  `gorm:"column:updated_at;type:bigint;not null" json:"updated_at"`
+	LoginAt   int64  `gorm:"column:login_at;type:bigint;not null" json:"login_at"`
+	Status    int32  `gorm:"column:status;type:int;not null" json:"status"`
 }
 
 // TableName UserInfoModel's table name

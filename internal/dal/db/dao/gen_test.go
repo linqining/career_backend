@@ -77,6 +77,7 @@ func Test_WithContext(t *testing.T) {
 	qCtx := query.WithContext(context.WithValue(context.Background(), key, value))
 
 	for _, ctx := range []context.Context{
+		qCtx.Company.UnderlyingDB().Statement.Context,
 		qCtx.UserInfoModel.UnderlyingDB().Statement.Context,
 	} {
 		if v := ctx.Value(key); v != value {

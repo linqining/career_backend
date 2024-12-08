@@ -48,7 +48,6 @@ func newUserInfoModel(db *gorm.DB, opts ...gen.DOOption) userInfoModel {
 	return _userInfoModel
 }
 
-// userInfoModel 用户表
 type userInfoModel struct {
 	userInfoModelDo userInfoModelDo
 
