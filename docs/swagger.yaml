@@ -1,0 +1,9 @@
+basePath: /v1
+host: localhost:8080
+info:
+  contact: {}
+  description: eagle demo
+  title: eagle docs api
+  version: "1.0"
+paths: {}
+swagger: "2.0"
