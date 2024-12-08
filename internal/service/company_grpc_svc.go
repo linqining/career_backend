@@ -5,7 +5,9 @@ import (
 	"career_backend/internal/ecode"
 	"career_backend/internal/repository"
 	"context"
+	"errors"
 	"github.com/go-eagle/eagle/pkg/errcode"
+	"gorm.io/gorm"
 
 	pb "career_backend/api/company/v1"
 )
@@ -39,12 +41,16 @@ func (s *CompanyServiceServer) CreateCompany(ctx context.Context, req *pb.Create
 
 	company, err = s.repo.GetCompanyByAddress(ctx, req.WalletAddress)
 	if err != nil {
-		return nil, ecode.ErrInternalError.WithDetails(errcode.NewDetails(map[string]interface{}{
-			"msg": err.Error(),
-		})).Status(req).Err()
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, ecode.ErrInternalError.WithDetails(errcode.NewDetails(map[string]interface{}{
+				"msg": err.Error(),
+			})).Status(req).Err()
+		}
 	}
-	if company != nil && company.ID > 0 {
-		return nil, ecode.ErrUserIsExist.Status(req).Err()
+	if company != nil {
+		return nil, ecode.ErrCompanyIsExist.WithDetails(errcode.NewDetails(map[string]interface{}{
+			"msg": "company address exists",
+		})).Status(req).Err()
 	}
 
 	newCompany := &model.Company{
@@ -74,8 +80,22 @@ func (s *CompanyServiceServer) DeleteCompany(ctx context.Context, req *pb.Delete
 	return &pb.DeleteCompanyReply{}, nil
 }
 func (s *CompanyServiceServer) GetCompany(ctx context.Context, req *pb.GetCompanyRequest) (*pb.GetCompanyReply, error) {
-	return &pb.GetCompanyReply{}, nil
+	company, err := s.repo.GetCompany(ctx, int64(req.Id))
+	if err != nil {
+		return nil, ecode.ErrCompanyNotExist.WithDetails(errcode.NewDetails(map[string]interface{}{
+			"msg": err.Error(),
+		})).Status(req).Err()
+	}
+	return &pb.GetCompanyReply{
+		Company: &pb.Company{
+			Id:            company.ID,
+			Name:          company.Name,
+			WalletAddress: company.WalletAddress,
+			LogoUrl:       company.LogoURL,
+		},
+	}, nil
 }
+
 func (s *CompanyServiceServer) GetCompanyByAddress(ctx context.Context, req *pb.GetCompanyByAddressRequest) (*pb.GetCompanyReply, error) {
 	return &pb.GetCompanyReply{}, nil
 }

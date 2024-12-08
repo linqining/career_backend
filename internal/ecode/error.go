@@ -29,4 +29,7 @@ var (
 	ErrRegisterFailed        = errcode.New(20111, "注册失败")
 	ErrToken                 = errcode.New(20112, "Gen token error")
 	ErrEncrypt               = errcode.New(20113, "Encrypting the user password error")
+
+	ErrCompanyIsExist  = errcode.New(30100, "The company already exists.")
+	ErrCompanyNotExist = errcode.New(30101, "The company not exists.")
 )

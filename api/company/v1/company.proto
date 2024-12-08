@@ -84,7 +84,7 @@ message GetCompanyRequest {
 
 
 message GetCompanyReply {
-
+		Company company =1;
 }
 
 message GetCompanyByAddressRequest {

@@ -98,10 +98,7 @@ func (r *companyRepo) GetCompany(ctx context.Context, id int64) (ret *model.Comp
 	}
 
 	// read redis cache
-	ret, err = r.cache.GetCompanyCache(ctx, id)
-	if err != nil {
-		return nil, err
-	}
+	ret, _ = r.cache.GetCompanyCache(ctx, id)
 	if ret != nil && ret.ID > 0 {
 		return ret, nil
 	}

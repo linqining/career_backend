@@ -35,6 +35,112 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on Company with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Company) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Company with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in CompanyMultiError, or nil if none found.
+func (m *Company) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Company) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Name
+
+	// no validation rules for WalletAddress
+
+	// no validation rules for LogoUrl
+
+	if len(errors) > 0 {
+		return CompanyMultiError(errors)
+	}
+
+	return nil
+}
+
+// CompanyMultiError is an error wrapping multiple validation errors returned
+// by Company.ValidateAll() if the designated constraints aren't met.
+type CompanyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CompanyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CompanyMultiError) AllErrors() []error { return m }
+
+// CompanyValidationError is the validation error returned by Company.Validate
+// if the designated constraints aren't met.
+type CompanyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CompanyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CompanyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CompanyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CompanyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CompanyValidationError) ErrorName() string { return "CompanyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CompanyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCompany.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CompanyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CompanyValidationError{}
+
 // Validate checks the field values on CreateCompanyRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -60,6 +166,8 @@ func (m *CreateCompanyRequest) validate(all bool) error {
 	// no validation rules for Name
 
 	// no validation rules for WalletAddress
+
+	// no validation rules for LogoUrl
 
 	if len(errors) > 0 {
 		return CreateCompanyRequestMultiError(errors)
@@ -271,6 +379,8 @@ func (m *UpdateCompanyRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Id
+
 	if len(errors) > 0 {
 		return UpdateCompanyRequestMultiError(errors)
 	}
@@ -474,6 +584,8 @@ func (m *DeleteCompanyRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Id
 
 	if len(errors) > 0 {
 		return DeleteCompanyRequestMultiError(errors)
@@ -679,6 +791,8 @@ func (m *GetCompanyRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Id
+
 	if len(errors) > 0 {
 		return GetCompanyRequestMultiError(errors)
 	}
@@ -781,6 +895,35 @@ func (m *GetCompanyReply) validate(all bool) error {
 
 	var errors []error
 
+	if all {
+		switch v := interface{}(m.GetCompany()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetCompanyReplyValidationError{
+					field:  "Company",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetCompanyReplyValidationError{
+					field:  "Company",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCompany()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetCompanyReplyValidationError{
+				field:  "Company",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return GetCompanyReplyMultiError(errors)
 	}
@@ -880,6 +1023,8 @@ func (m *GetCompanyByAddressRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for WalletAddress
 
 	if len(errors) > 0 {
 		return GetCompanyByAddressRequestMultiError(errors)
